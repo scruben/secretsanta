@@ -9,23 +9,17 @@ var events = [];
 const bot = new TelegramBot(token.token, {polling: true});
 
 bot.on('message', function (msg) {
-  console.log(msg.from.username);
-  // let posEvent = getEvent(msg.chat.id);
-  // if (posEvent != undefined && posEvent >= 0) {
-  //   if (msg.from.username === posEvent[i].chatAdmin){
-  //     if (events[posEvent].maxPrice === undefined && !isNaN(msg.text)) {
-  //       events[posEvent].maxPrice = 0+msg.text;
-  //     } else if (events[posEvent].maxPrice === undefined && isNaN(msg.text)) {
-  //       bot.sendMessage(msg.chat.id, `I need a maximum`);
-  //     }
-  //   }
-  // }
-  // for (var i = 0; i < events.length; i++) {
-  //   for (var j = 0; j < events[i].users.length; i++) {
-  //     events[i].users[j]
-  //   }
-  //
-  // }
+  if ( msg.text.toLowerCase() === '/start' && msg.chat.id > 0) {
+    for (var i = 0; i < events.length; i++) {
+      for (var j = 0; j < events[i].users.length; j++) {
+        if (events[i].users[j].username === msg.from.username) {
+          // Where magic happens
+          bot.sendMessage(msg.chat.id, `And you'll give the present to : ${events[i].users[j].receiver}`);
+
+        }
+      }
+    }
+  }
 });
 
 // Matches /begin command
