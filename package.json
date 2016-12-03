@@ -1,7 +1,7 @@
 {
-  "name": "tournament_bot",
+  "name": "secret santa",
   "version": "1.0.0",
-  "description": "Telegram bot to create tournaments",
+  "description": "Telegram bot for Secret Santa",
   "main": "main.js",
   "dependencies": {
     "node-telegram-bot-api": "^0.24.0",
@@ -13,9 +13,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mapageKA21/tournament-bot.git"
+    "url": ""
   },
-  "author": "Manel Pavon",
+  "author": "Manel Pavon & CO",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/mapageKA21/tournament-bot/issues"
