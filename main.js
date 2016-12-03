@@ -20,6 +20,22 @@ bot.on('message', function (msg) {
       }
     }
   }
+
+  if (msg.chat.id < 0) {
+    let posEvent = getEvent(msg.chat.id);
+    if (posEvent != undefined && posEvent >= 0) {
+      if (msg.from.username === events[posEvent].chatAdmin){
+        if (events[posEvent].maxPrice === undefined && !isNaN(msg.text)) {
+          events[posEvent].maxPrice = msg.text;
+          bot.sendMessage(msg.chat.id, `The price of the gift is set to ${msg.text}$`);
+        } else if (events[posEvent].maxPrice === undefined && isNaN(msg.text)) {
+          bot.sendMessage(msg.chat.id, `The maximum price is 20$ by default`);
+          events[posEvent].maxPrice = 20;
+        }
+      }
+    }
+  }
+
 });
 
 // Matches /begin command
@@ -40,6 +56,7 @@ bot.onText(/\/begin/, function (msg, match) {
       setTimeout (function () {
         bot.sendMessage(msg.chat.id, `Ok, let's start. Anyone who wants to participate should use the command /register`);
       }, 600);
+      bot.sendMessage(msg.chat.id, `${newEvent.chatAdminName}, can you tell me the maximum price for the gift, please? (Just type a number... the price by default is 20$)`);
     } else {
       bot.sendMessage(msg.chat.id, `A Secret Santa has already started!`);
     }
@@ -52,7 +69,7 @@ bot.onText(/\/cancel/, function (msg, match) {
   if (msg.chat.id < 0) {
     let chatId = msg.chat.id;
     let i = getEvent(chatId);
-    events = events.splice(i,1);
+    events = [];
     bot.sendMessage(chatId, `Cancelled Secret Santa`);
   } else {
     bot.sendMessage(msg.chat.id, `This command is only for group chats!`);
