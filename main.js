@@ -153,18 +153,21 @@ bot.onText(/\/help/, function (msg, match) {
   if (msg.chat.id < 0) {
     let chatId = msg.chat.id;
     let resp = `
-    Hello! I'm Santa! I hope your Christmas Spirit is on fire!!
-    I'll guide you to the North Pole and give you some ideas for
-    the gift that you have to send to your secret friend.
-      Group chat commands->
-      /start - Start as admin a new Secret Santa event
-      /register - Sign up at the Secret Santa event
-      /go - (only admin) Start the lottery to know who's
-      /help - list of commands and help
-      /cancel - delete the Secret Santa in case you made some mistake.
-      when you finish your register, you can start a private chat with
-      @santacw_bot and he will tell you your next step!!!
-      `;
+HO HO HO HO!
+
+I'm Santa! I hope your Christmas Spirit is on fire!!
+I'll guide you to the North Pole and give you some ideas for
+the gift that you have to send to your secret friend.
+
+    /begin - Start as admin a new Secret Santa event
+    /register - Sign up at the Secret Santa event
+    /go - (only admin) Start the lottery to know who's
+    /help - list of commands and help
+    /cancel - delete the Secret Santa in case you made some mistake.
+
+when you finish your register, you can start a private chat with
+@santacw_bot and he will tell you your next step!!!
+`;
     bot.sendMessage(chatId, resp);
   } else {
     bot.sendMessage(msg.chat.id, `This command is only for group chats!`);
