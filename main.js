@@ -1,6 +1,13 @@
 'use strict';
 const TelegramBot = require('node-telegram-bot-api');
 const token = require('./token.json');
+// const nconf = require('nconf');
+
+// nconf.argv()
+//    .env()
+//    .file({ file: './token.json' });
+// nconf.set('token', token.token);
+
 var events = [];
 // Setup polling way
 const bot = new TelegramBot(token.token, {polling: true});
