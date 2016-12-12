@@ -1,5 +1,5 @@
 {
-  "name": "secret santa",
+  "name": "secret_santa",
   "version": "1.0.0",
   "description": "Telegram bot for Secret Santa",
   "main": "main.js",
