@@ -1,3 +1,3 @@
 /* .Procfile */
 
-worker: npm run build && npm run serve
+worker: npm start
