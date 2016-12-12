@@ -1,6 +1,7 @@
 'use strict';
 
 const TelegramBot = require('node-telegram-bot-api');
+const nconf = require('nconf');
 // const token = require('./token.json');
 
 nconf.argv()
