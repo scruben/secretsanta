@@ -9,13 +9,21 @@ var events = [];
 const bot = new TelegramBot(token.token, {polling: true});
 
 bot.on('message', function (msg) {
+
   if ( msg.text.toLowerCase() === '/start' && msg.chat.id > 0) {
     for (var i = 0; i < events.length; i++) {
       for (var j = 0; j < events[i].users.length; j++) {
         if (events[i].users[j].username === msg.from.username) {
           // Where magic happens
-          bot.sendMessage(msg.chat.id, `And you'll give the present to : ${events[i].users[j].receiver}`);
+          bot.sendMessage(msg.chat.id, `And you'll give the present to : *${events[i].users[j].receiver}*`,{parse_mode: 'Markdown'});
+          bot.sendMessage(msg.chat.id, `If you want to give some suggestions for your own gift... type for ex.
+            I like skiing
+            I like books
+            I like ...
 
+            To know what ${events[i].users[j].receiver} likes, type /suggestions every now and then
+            `);
+          return;
         }
       }
     }
@@ -38,10 +46,41 @@ bot.on('message', function (msg) {
 
 });
 
+bot.onText(/I like/, function (msg, match) {
+  let message = msg.text.substr(7);
+  for (var i = 0; i < events.length; i++) {
+    for (var j = 0; j < events[i].users.length; j++) {
+      if (events[i].users[j].username === msg.from.username) {
+        if (events[i].users[j].ownSuggs) events[i].users[j].ownSuggs.push(message);
+        else events[i].users[j].ownSuggs=[message];
+      }
+    }
+  }
+});
+
+bot.onText(/\/suggestions/, function (msg, match) {
+  for (var i = 0; i < events.length; i++) {
+    for (var j = 0; j < events[i].users.length; j++) {
+      if (events[i].users[j].username === msg.from.username) {
+        // if (events[i].users[j].ownSuggs) events[i].users[j].ownSuggs.push(message);
+        // else events[i].users[j].ownSuggs=[message];
+        let receiver = events[i].users[j].receiver;
+        for (var m = 0; m < events.length; m++) {
+          for (var n = 0; n < events[m].users.length; n++) {
+            if (events[m].users[n].username === receiver && events[m].users[n].ownSuggs) {
+              bot.sendMessage(msg.chat.id, `${receiver} likes ${events[m].users[n].ownSuggs.join(', ')}`);
+            }
+          }
+        }
+      }
+    }
+  }
+});
+
 // Matches /begin command
 bot.onText(/\/begin/, function (msg, match) {
   if (msg.chat.id < 0) {
-    if (!getEvent(msg.chat.id)) {
+    if (getEvent(msg.chat.id)<0) {
       console.log('new Event');
       let newEvent = {};
       newEvent.chatId = msg.chat.id;
@@ -69,6 +108,7 @@ bot.onText(/\/cancel/, function (msg, match) {
   if (msg.chat.id < 0) {
     let chatId = msg.chat.id;
     let i = getEvent(chatId);
+    // events = events.splice(i,1);
     events = [];
     bot.sendMessage(chatId, `Cancelled Secret Santa`);
   } else {
@@ -176,6 +216,7 @@ const getEvent = (chatId) => {
   for (var i = 0; i < events.length; i++) {
     if (events[i].chatId === chatId) return i;
   }
+  return -1;
 };
 
 const shuffle = function (array) {
